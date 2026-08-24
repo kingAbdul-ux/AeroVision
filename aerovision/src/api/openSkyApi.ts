@@ -1,17 +1,9 @@
 import axios from "axios";
 
-
-const OPENSKY_URL =
-  "https://opensky-network.org/api/states/all";
-
+const API_URL = "http://localhost:4000/api/opensky/states";
 
 export async function getAircraftStates() {
-
-  const response = await axios.get(
-    OPENSKY_URL
-  );
-
+  const response = await axios.get(API_URL);
 
   return response.data;
-
 }

@@ -1,72 +1,36 @@
-import {
-  getAircraftStates
-} from "../api/openSkyApi";
+import { getAircraftStates } from "../api/openSkyApi";
 
+import type { Aircraft } from "../types/flight";
 
-import type {
-  Aircraft
-} from "../types/flight";
+type OpenSkyState = [string | null, string | null, string | null, ...unknown[]];
 
+export async function fetchAircraft(): Promise<Aircraft[]> {
+  const data = await getAircraftStates();
 
+  const aircraft: Aircraft[] = (data.states ?? [])
+    .map((plane: OpenSkyState) => {
+      const longitude = plane[5];
+      const latitude = plane[6];
+      const altitude = plane[7];
+      const velocity = plane[9];
+      const heading = plane[10];
 
-export async function fetchAircraft()
-: Promise<Aircraft[]> {
+      return {
+        icao24: plane[0] ?? null,
+        callsign: typeof plane[1] === "string" ? plane[1].trim() || null : null,
+        country: plane[2] ?? null,
+        longitude: typeof longitude === "number" ? longitude : null,
+        latitude: typeof latitude === "number" ? latitude : null,
+        altitude: typeof altitude === "number" ? altitude : null,
+        velocity: typeof velocity === "number" ? velocity : null,
+        heading: typeof heading === "number" ? heading : null,
+      };
+    })
+    .filter(
+      (plane: Aircraft) =>
+        plane.latitude !== null &&
+        plane.longitude !== null
+    );
 
-
-  const data =
-    await getAircraftStates();
-
-
-
-  const aircraft =
-    data.states
-      ?.map((plane: [
-        string,
-        string | null,
-        string,
-        unknown,
-        unknown,
-        number | null,
-        number | null,
-        number | null,
-        unknown,
-        number | null,
-        number | null,
-      ]) => ({
-
-        icao24: plane[0],
-
-        callsign:
-          plane[1]?.trim()
-          || null,
-
-        country:
-          plane[2],
-
-        longitude:
-          plane[5],
-
-        latitude:
-          plane[6],
-
-        altitude:
-          plane[7],
-
-        velocity:
-          plane[9],
-
-        heading:
-          plane[10],
-
-      }))
-      .filter(
-        (plane:Aircraft)=>
-          plane.latitude &&
-          plane.longitude
-      );
-
-
-
-  return aircraft || [];
-
+  return aircraft;
 }

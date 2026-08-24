@@ -10,56 +10,26 @@ import Airports from "./pages/Airports";
 import LiveMap from "./pages/LiveMap";
 import Weather from "./pages/Weather";
 
-
 export default function App() {
-
   return (
-
     <BrowserRouter>
-
-      {/* Navbar appears on every page */}
       <Navbar />
 
       <Routes>
+        <Route path="/" element={<Home />} />
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
+        <Route path="/flights" element={<Flights />} />
 
-        <Route
-          path="/flights"
-          element={<Flights />}
-        />
+        <Route path="/flight/:id" element={<FlightDetails />} />
 
-        <Route
-          path="/flight/:id"
-          element={<FlightDetails />}
-        />
+        <Route path="/airports" element={<Airports />} />
 
-        <Route
-          path="/airports"
-          element={<Airports />}
-        />
+        <Route path="/map" element={<LiveMap />} />
 
-        <Route
-          path="/map"
-          element={<LiveMap />}
-        />
-
-        <Route
-          path="/weather"
-          element={<Weather />}
-        />
-
+        <Route path="/weather" element={<Weather />} />
       </Routes>
-
     </BrowserRouter>
-
   );
 }
