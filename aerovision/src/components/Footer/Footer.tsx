@@ -1,32 +1,33 @@
+import { Link } from "react-router-dom";
 import { Plane } from "lucide-react";
-
 
 export default function Footer() {
   return (
-    <footer className="bg-[#050B16] border-t border-white/10">
+    <footer className="border-t border-white/10 bg-[#050B16]">
 
-      <div className="max-w-7xl mx-auto px-6 py-12">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
 
+          {/* Brand */}
 
           <div>
 
-            <div className="flex items-center gap-3">
-
+            <Link
+              to="/"
+              className="inline-flex items-center gap-3"
+            >
               <Plane
                 size={30}
                 className="text-sky-400"
               />
 
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-xl font-bold text-white sm:text-2xl">
                 AeroVision
               </h2>
+            </Link>
 
-            </div>
-
-
-            <p className="mt-5 text-gray-400 leading-7">
+            <p className="mt-5 max-w-sm text-sm leading-7 text-gray-400 sm:text-base">
               Explore flights, aircraft and airports
               around the world with AeroVision.
             </p>
@@ -34,78 +35,150 @@ export default function Footer() {
           </div>
 
 
+          {/* Explore */}
 
           <div>
 
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className="mb-4 font-semibold text-white">
               Explore
             </h3>
 
+            <ul className="space-y-3 text-sm text-gray-400 sm:text-base">
 
-            <ul className="space-y-3 text-gray-400">
+              <li>
+                <Link
+                  to="/flights"
+                  className="transition hover:text-sky-400"
+                >
+                  Flights
+                </Link>
+              </li>
 
-              <li>Flights</li>
-              <li>Airports</li>
-              <li>Aircraft</li>
-              <li>Live Map</li>
+              <li>
+                <Link
+                  to="/airports"
+                  className="transition hover:text-sky-400"
+                >
+                  Airports
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/map"
+                  className="transition hover:text-sky-400"
+                >
+                  Live Map
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/weather"
+                  className="transition hover:text-sky-400"
+                >
+                  Weather
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/dashboard"
+                  className="transition hover:text-sky-400"
+                >
+                  Dashboard
+                </Link>
+              </li>
 
             </ul>
 
           </div>
 
 
-
+          {/* Company */}
 
           <div>
 
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className="mb-4 font-semibold text-white">
               Company
             </h3>
 
+            <ul className="space-y-3 text-sm text-gray-400 sm:text-base">
 
-            <ul className="space-y-3 text-gray-400">
+              <li>
+                <button
+                  type="button"
+                  className="transition hover:text-sky-400"
+                >
+                  About
+                </button>
+              </li>
 
-              <li>About</li>
-              <li>Contact</li>
-              <li>Privacy</li>
-              <li>Terms</li>
+              <li>
+                <button
+                  type="button"
+                  className="transition hover:text-sky-400"
+                >
+                  Contact
+                </button>
+              </li>
+
+              <li>
+                <button
+                  type="button"
+                  className="transition hover:text-sky-400"
+                >
+                  Privacy
+                </button>
+              </li>
+
+              <li>
+                <button
+                  type="button"
+                  className="transition hover:text-sky-400"
+                >
+                  Terms
+                </button>
+              </li>
 
             </ul>
 
           </div>
 
 
-
+          {/* Contact */}
 
           <div>
 
-            <h3 className="text-white font-semibold mb-4">
+            <h3 className="mb-4 font-semibold text-white">
               Contact
             </h3>
 
-
-            <p className="text-gray-400">
+            <a
+              href="mailto:aviation@aerovision.com"
+              className="wrap-break-word text-sm text-gray-400 transition hover:text-sky-400 sm:text-base"
+            >
               aviation@aerovision.com
-            </p>
+            </a>
 
-
-            <p className="text-gray-400 mt-2">
+            <p className="mt-2 text-sm text-gray-400 sm:text-base">
               Global Aviation Platform
             </p>
 
-
           </div>
 
-
         </div>
 
 
-        <div className="border-t border-white/10 mt-10 pt-6 text-center text-gray-500">
+        {/* Copyright */}
 
-          © 2026 AeroVision. All rights reserved.
+        <div className="mt-10 border-t border-white/10 pt-6 text-center">
+
+          <p className="text-xs text-gray-500 sm:text-sm">
+            © 2026 AeroVision. All rights reserved.
+          </p>
 
         </div>
-
 
       </div>
 

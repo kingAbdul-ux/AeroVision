@@ -84,8 +84,9 @@ function WeatherLayers() {
 
   return (
     <>
-      <div className="absolute right-4 top-4 z-1000 w-64 rounded-2xl border border-white/10 bg-[#050B16]/95 p-5 text-white shadow-2xl backdrop-blur-xl">
-        <h2 className="text-lg font-bold">
+      {/* Weather controls */}
+      <div className="absolute right-3 top-3 z-1000 w-[calc(100%-1.5rem)] max-w-xs rounded-2xl border border-white/10 bg-[#050B16]/95 p-4 text-white shadow-2xl backdrop-blur-xl sm:right-4 sm:top-4 sm:p-5">
+        <h2 className="text-base font-bold sm:text-lg">
           Weather Layers
         </h2>
 
@@ -128,6 +129,7 @@ function WeatherLayers() {
         </label>
       </div>
 
+      {/* Precipitation */}
       {showPrecipitation && (
         <TileLayer
           key={`precipitation-${weatherRefreshKey}`}
@@ -137,6 +139,7 @@ function WeatherLayers() {
         />
       )}
 
+      {/* Clouds */}
       {showClouds && (
         <TileLayer
           key={`clouds-${weatherRefreshKey}`}
@@ -220,36 +223,37 @@ export default function LiveMap() {
   return (
     <main className="min-h-screen bg-[#07111F]">
 
-      <div className="px-6 py-8">
+      {/* Header */}
+      <div className="px-4 py-6 sm:px-6 sm:py-8">
         <div className="mx-auto max-w-7xl">
 
-          <p className="text-lg text-sky-400">
+          <p className="text-base text-sky-400 sm:text-lg">
             AeroVision
           </p>
 
-          <h1 className="mt-2 text-5xl font-bold text-white">
+          <h1 className="mt-2 text-3xl font-bold text-white sm:text-5xl">
             Live Flight Map
           </h1>
 
-          <p className="mt-3 text-gray-400">
+          <p className="mt-3 max-w-2xl text-sm text-gray-400 sm:text-base">
             Real aircraft positions powered by OpenSky Network.
           </p>
 
           {loading && (
-            <p className="mt-4 text-sky-400">
+            <p className="mt-4 text-sm text-sky-400 sm:text-base">
               Loading aircraft...
             </p>
           )}
 
           {!loading && !error && (
-            <p className="mt-4 text-green-400">
+            <p className="mt-4 text-sm text-green-400 sm:text-base">
               {aircraft.length} aircraft detected
             </p>
           )}
 
           {error && (
             <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 p-4">
-              <p className="text-red-400">
+              <p className="text-sm text-red-400">
                 {error}
               </p>
             </div>
@@ -258,7 +262,8 @@ export default function LiveMap() {
         </div>
       </div>
 
-      <div className="relative h-175 w-full">
+      {/* Map */}
+      <div className="relative h-162.5 w-full sm:h-175">
 
         <MapControl
           aircraft={aircraft}
@@ -299,63 +304,62 @@ export default function LiveMap() {
               }}
             >
               <Popup>
+                <div className="min-w-50 sm:min-w-55">
 
-                <div className="min-w-55">
-
-                  <h2 className="text-lg font-bold">
+                  <h2 className="text-base font-bold sm:text-lg">
                     {plane.callsign ||
                       "Unknown Aircraft"}
                   </h2>
 
-                  <p className="mt-2">
-                    Country: {plane.country}
-                  </p>
+                  <div className="mt-2 space-y-1 text-sm">
+                    <p>
+                      Country: {plane.country}
+                    </p>
 
-                  <p>
-                    ICAO24: {plane.icao24}
-                  </p>
+                    <p>
+                      ICAO24: {plane.icao24}
+                    </p>
 
-                  <p>
-                    Altitude:{" "}
-                    {plane.altitude !== null
-                      ? `${Math.round(
-                          plane.altitude
-                        )} m`
-                      : "N/A"}
-                  </p>
+                    <p>
+                      Altitude:{" "}
+                      {plane.altitude !== null
+                        ? `${Math.round(
+                            plane.altitude
+                          )} m`
+                        : "N/A"}
+                    </p>
 
-                  <p>
-                    Speed:{" "}
-                    {plane.velocity !== null
-                      ? `${Math.round(
-                          plane.velocity * 3.6
-                        )} km/h`
-                      : "N/A"}
-                  </p>
+                    <p>
+                      Speed:{" "}
+                      {plane.velocity !== null
+                        ? `${Math.round(
+                            plane.velocity * 3.6
+                          )} km/h`
+                        : "N/A"}
+                    </p>
 
-                  <p>
-                    Heading:{" "}
-                    {plane.heading !== null
-                      ? `${Math.round(
-                          plane.heading
-                        )}°`
-                      : "N/A"}
-                  </p>
+                    <p>
+                      Heading:{" "}
+                      {plane.heading !== null
+                        ? `${Math.round(
+                            plane.heading
+                          )}°`
+                        : "N/A"}
+                    </p>
 
-                  <p>
-                    Position:{" "}
-                    {plane.latitude.toFixed(3)},{" "}
-                    {plane.longitude.toFixed(3)}
-                  </p>
+                    <p>
+                      Position:{" "}
+                      {plane.latitude.toFixed(3)},{" "}
+                      {plane.longitude.toFixed(3)}
+                    </p>
+                  </div>
 
                 </div>
-
               </Popup>
             </Marker>
           ))}
 
         </MapContainer>
-
       </div>
 
     </main>

@@ -1,22 +1,48 @@
-import apiClient from "./apiClient";
+import axios from "axios";
 
-const API_KEY = import.meta.env.VITE_AERODATABOX_API_KEY;
+const API_KEY = import.meta.env.VITE_RAPIDAPI_KEY;
 
-export async function getAirport(icao: string) {
+const BASE_URL = "https://aerodatabox.p.rapidapi.com";
 
-  const response = await apiClient.get(
+const headers = {
+  "X-RapidAPI-Key": API_KEY,
+  "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com",
+};
 
-    `https://aerodatabox.p.rapidapi.com/airports/icao/${icao}`,
+export async function getAirportByIata(iata: string) {
+  if (!API_KEY) {
+    throw new Error("VITE_RAPIDAPI_KEY is missing.");
+  }
 
+  const response = await axios.get(
+    `${BASE_URL}/airports/iata/${iata}`,
     {
-      headers: {
-        "X-RapidAPI-Key": API_KEY,
-        "X-RapidAPI-Host": "aerodatabox.p.rapidapi.com",
+      headers,
+      params: {
+        withTime: "true",
+        withRunways: "true",
       },
     }
-
   );
 
   return response.data;
+}
 
+export async function searchAirports(term: string) {
+  if (!API_KEY) {
+    throw new Error("VITE_RAPIDAPI_KEY is missing.");
+  }
+
+  const response = await axios.get(
+    `${BASE_URL}/airports/search/term`,
+    {
+      headers,
+      params: {
+        q: term,
+        limit: 10,
+      },
+    }
+  );
+
+  return response.data;
 }
