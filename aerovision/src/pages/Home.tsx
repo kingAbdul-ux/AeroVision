@@ -1,20 +1,23 @@
-import Hero from "../components/Hero/Hero";
-import Stats from "../components/Stats/Stats";
-import AircraftSection from "../components/AircraftSection/AircraftSection";
-import FlightMap from "../components/FlightMap/FlightMap";
-import Footer from "../components/Footer/Footer";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, CloudSun, Map, Plane, Search, TowerControl } from "lucide-react";
+import plane from "../assets/images/plane.png";
 
 export default function Home() {
-  return (
-    <>
-      <main className="bg-[#07111F]">
-        <Hero />
-        <Stats />
-        <AircraftSection />
-        <FlightMap />
-      </main>
-
-      <Footer />
-    </>
-  );
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+  function search(event: React.FormEvent) { event.preventDefault(); const value = query.trim(); navigate(value ? `/flights?search=${encodeURIComponent(value)}` : "/flights"); }
+  return <main className="relative overflow-hidden"><div className="pointer-events-none absolute -left-32 top-8 h-80 w-80 rounded-full bg-sky-200/45 blur-3xl"/><div className="pointer-events-none absolute right-0 top-28 h-72 w-72 rounded-full bg-cyan-100/60 blur-3xl"/>
+    <section className="relative"><div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:py-20">
+      <div><p className="eyebrow">Aviation intelligence, made clear</p><h1 className="display-heading mt-4 max-w-xl text-4xl font-extrabold leading-[1.05] sm:text-5xl">See the World in Flight.</h1><p className="page-copy mt-5 max-w-xl text-base sm:text-lg">Explore flight activity, airport information, live aircraft positions and local aviation weather from one precise, dependable workspace.</p>
+      <div className="mt-7 flex flex-wrap gap-3"><Link to="/flights" className="primary-button inline-flex items-center gap-2">Explore flights <ArrowRight size={17}/></Link><Link to="/map" className="secondary-button inline-flex items-center gap-2"><Map size={17}/> View live map</Link></div>
+      <form onSubmit={search} className="glass-surface mt-9 max-w-xl rounded-xl p-4"><label htmlFor="flight-search" className="mb-2 block text-sm font-bold text-slate-700">Find a flight</label><div className="flex gap-2"><div className="relative flex-1"><Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18}/><input id="flight-search" value={query} onChange={(e) => setQuery(e.target.value)} className="input-field pl-10" placeholder="Flight number, airline or airport" /></div><button className="primary-button" type="submit">Search</button></div></form></div>
+      <div className="glass-surface relative mx-auto w-full max-w-xl rounded-2xl p-6 sm:p-10"><div className="absolute inset-x-0 top-1/2 border-t border-dashed border-sky-200"/><img src={plane} alt="Commercial aircraft in flight" className="relative z-10 w-full drop-shadow-xl"/><div className="relative z-10 mt-4 flex items-center gap-2 text-sm font-semibold text-sky-800"><span className="h-2 w-2 rounded-full bg-emerald-500"/> Connected to live aviation data when available</div></div>
+    </div></section>
+    <section className="mx-auto max-w-7xl px-4 pb-4 sm:px-6"><div className="grid divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200 bg-white/60 sm:grid-cols-3 sm:divide-x sm:divide-y-0"><Fact value="Live positions" label="Shown only when OpenSky responds"/><Fact value="Airport records" label="Search IATA, ICAO, city or name"/><Fact value="Local conditions" label="Weather updates by selected location"/></div></section>
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="eyebrow">Explore the network</p><h2 className="mt-2 text-2xl font-extrabold tracking-tight text-[#102a43]">Essential aviation tools</h2></div><p className="max-w-md text-sm text-slate-500">Live information is clearly identified and may vary with connected provider availability.</p></div><div className="mt-6 grid gap-4 md:grid-cols-3"><Feature title="Flight activity" copy="Search current flight records, routes and available operational detail." to="/flights" icon={<Plane size={20}/>}/><Feature title="Airport explorer" copy="Find airport codes, locations, time zones and runway information." to="/airports" icon={<TowerControl size={20}/>}/><Feature title="Live aircraft map" copy="View real aircraft positions supplied by the OpenSky Network." to="/map" icon={<Map size={20}/>}/></div></section>
+    <section className="mx-auto grid max-w-7xl gap-5 px-4 pb-16 sm:px-6 lg:grid-cols-2"><Link to="/map" className="aviation-panel group min-h-52 p-6"><p className="eyebrow">Live flight preview</p><div className="mt-5 flex items-center justify-between"><div><h2 className="text-xl font-extrabold text-[#102a43]">Follow aircraft in motion</h2><p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">A clean, live map workspace with searchable provider-supplied aircraft positions.</p></div><Map className="text-sky-600 transition group-hover:scale-110" size={36}/></div><span className="mt-7 inline-flex items-center gap-1 text-sm font-bold text-sky-700">Open flight map <ArrowRight size={15}/></span></Link><Link to="/weather" className="rounded-2xl border border-cyan-100 bg-cyan-50/70 p-6 transition hover:border-sky-300"><p className="eyebrow">Conditions at a glance</p><div className="mt-5 flex items-center gap-5"><span className="rounded-xl bg-white p-3 text-sky-600 shadow-sm"><CloudSun size={31}/></span><div><h2 className="text-xl font-extrabold text-[#102a43]">Weather, in context</h2><p className="mt-2 max-w-sm text-sm leading-6 text-slate-600">Select from supported airport locations and review provider-supplied current conditions.</p></div></div><span className="mt-7 inline-flex items-center gap-1 text-sm font-bold text-sky-700">Check weather <ArrowRight size={15}/></span></Link></section>
+  </main>;
 }
+function Feature({title,copy,to,icon}:{title:string;copy:string;to:string;icon:React.ReactNode}) { return <Link to={to} className="aviation-panel group p-5 transition hover:-translate-y-0.5 hover:border-sky-300"><span className="flex h-10 w-10 items-center justify-center rounded-lg bg-sky-50 text-sky-700">{icon}</span><h3 className="mt-4 font-bold text-[#102a43]">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-500">{copy}</p><span className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-sky-700">Open <ArrowRight size={15} className="transition group-hover:translate-x-1"/></span></Link>; }
+function Fact({value,label}:{value:string;label:string}) { return <div className="px-5 py-4"><p className="mono-data text-sm font-bold text-sky-700">{value}</p><p className="mt-1 text-xs text-slate-500">{label}</p></div>; }

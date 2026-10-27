@@ -6,68 +6,132 @@ import {
 } from "react-leaflet";
 
 import L from "leaflet";
+import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
+
+import { fetchAircraft } from "../../services/flightservice";
+
+type Aircraft = {
+  icao24: string;
+  callsign: string | null;
+  country: string;
+  latitude: number;
+  longitude: number;
+  altitude: number | null;
+  velocity: number | null;
+  heading: number | null;
+};
 
 const planeIcon = L.icon({
   iconUrl:
     "https://cdn-icons-png.flaticon.com/512/61/61212.png",
-
   iconSize: [35, 35],
   iconAnchor: [17, 17],
   popupAnchor: [0, -15],
 });
 
-const flights = [
-  {
-    id: "EK202",
-    airline: "Emirates",
-    aircraft: "Airbus A380",
-    route: "Dubai → New York",
-    position: [25.2532, 55.3657] as [number, number],
-  },
-  {
-    id: "BA117",
-    airline: "British Airways",
-    aircraft: "Boeing 787",
-    route: "London → New York",
-    position: [51.47, -0.4543] as [number, number],
-  },
-  {
-    id: "SQ12",
-    airline: "Singapore Airlines",
-    aircraft: "Airbus A350",
-    route: "Singapore → Tokyo",
-    position: [1.3644, 103.9915] as [number, number],
-  },
-];
-
 export default function FlightMap() {
+  const [aircraft, setAircraft] = useState<Aircraft[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadAircraft() {
+      try {
+        setError("");
+
+        const data = await fetchAircraft();
+
+        const validAircraft: Aircraft[] = data
+          .filter(
+            (plane: Aircraft) =>
+              Number.isFinite(plane.latitude) &&
+              Number.isFinite(plane.longitude)
+          )
+          .slice(0, 50);
+
+        if (!cancelled) {
+          setAircraft(validAircraft);
+        }
+      } catch (err) {
+        console.error(
+          "Home Flight Map OpenSky error:",
+          err
+        );
+
+        if (!cancelled) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : "Unable to load live aircraft."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadAircraft();
+
+    const intervalId = window.setInterval(() => {
+      void loadAircraft();
+    }, 30000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
   return (
-    <section className="bg-[#07111F] px-4 py-14 sm:px-6 sm:py-20">
+    <section className="bg-[#08121b] px-4 py-14 sm:px-6 sm:py-20">
       <div className="mx-auto max-w-7xl">
 
         {/* Heading */}
 
         <div className="mb-8 sm:mb-10">
 
-          <p className="text-base text-sky-400 sm:text-lg">
-            Live Tracking
+          <p className="eyebrow">
+            Radar feed / refreshed every 30 seconds
           </p>
 
-          <h2 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="display-heading mt-3 text-4xl font-bold text-white sm:text-5xl">
             Global Flight Map
           </h2>
 
-          <p className="mt-3 max-w-xl text-sm text-gray-400 sm:text-base">
-            Track aircraft around the world.
+          <p className="mt-3 max-w-xl text-sm text-[#a7bbc2] sm:text-base">
+            Real-time positions from the global airspace network.
           </p>
+
+          {loading && (
+            <p className="mt-3 text-sm text-sky-400">
+              Loading live aircraft...
+            </p>
+          )}
+
+          {!loading && !error && (
+            <p className="mono-data mt-3 text-xs text-[#5ee6a8]">
+              {aircraft.length} aircraft currently displayed
+            </p>
+          )}
+
+          {error && (
+            <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/10 p-4">
+              <p className="text-sm text-red-400">
+                {error}
+              </p>
+            </div>
+          )}
 
         </div>
 
-
         {/* Map */}
 
-        <div className="h-112.5 overflow-hidden rounded-3xl border border-white/10 sm:h-137.5 lg:h-150">
+        <div className="h-112.5 overflow-hidden border border-[#9ab7c3]/25 shadow-2xl sm:h-137.5 lg:h-150">
 
           <MapContainer
             center={[20, 0]}
@@ -81,31 +145,60 @@ export default function FlightMap() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {flights.map((flight) => (
+            {aircraft.map((plane) => (
               <Marker
-                key={flight.id}
-                position={flight.position}
+                key={plane.icao24}
+                position={[
+                  plane.latitude,
+                  plane.longitude,
+                ]}
                 icon={planeIcon}
               >
                 <Popup>
                   <div className="min-w-47.5 sm:min-w-55">
 
                     <h3 className="text-base font-bold sm:text-lg">
-                      {flight.id}
+                      {plane.callsign ||
+                        "Unknown Aircraft"}
                     </h3>
 
                     <div className="mt-2 space-y-1 text-sm">
+
                       <p>
-                        Airline: {flight.airline}
+                        Country: {plane.country}
                       </p>
 
                       <p>
-                        Aircraft: {flight.aircraft}
+                        ICAO24: {plane.icao24}
                       </p>
 
                       <p>
-                        Route: {flight.route}
+                        Altitude:{" "}
+                        {plane.altitude !== null
+                          ? `${Math.round(
+                              plane.altitude
+                            )} m`
+                          : "N/A"}
                       </p>
+
+                      <p>
+                        Speed:{" "}
+                        {plane.velocity !== null
+                          ? `${Math.round(
+                              plane.velocity * 3.6
+                            )} km/h`
+                          : "N/A"}
+                      </p>
+
+                      <p>
+                        Heading:{" "}
+                        {plane.heading !== null
+                          ? `${Math.round(
+                              plane.heading
+                            )}°`
+                          : "N/A"}
+                      </p>
+
                     </div>
 
                   </div>

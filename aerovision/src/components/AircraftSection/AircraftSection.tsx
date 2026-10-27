@@ -4,7 +4,11 @@ const airports = [
   {
     name: "Dubai International",
     code: "DXB",
+    icao: "OMDB",
     location: "Dubai, United Arab Emirates",
+    coordinates: { lat: 25.2528, lon: 55.3644 },
+    timeZone: "GST",
+    runways: 3,
     passengers: "86 million",
     image:
       "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=800",
@@ -13,7 +17,11 @@ const airports = [
   {
     name: "London Heathrow",
     code: "LHR",
+    icao: "EGLL",
     location: "London, United Kingdom",
+    coordinates: { lat: 51.4700, lon: -0.4543 },
+    timeZone: "GMT",
+    runways: 3,
     passengers: "74 million",
     image:
       "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800",
@@ -22,7 +30,11 @@ const airports = [
   {
     name: "Singapore Changi",
     code: "SIN",
+    icao: "WSSS",
     location: "Singapore",
+    coordinates: { lat: 1.3521, lon: 103.8198 },
+    timeZone: "SGT",
+    runways: 4,
     passengers: "68 million",
     image:
       "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?w=800",
@@ -61,8 +73,11 @@ export default function AirportSection() {
               name={airport.name}
               code={airport.code}
               location={airport.location}
-              passengers={airport.passengers}
               image={airport.image}
+              coordinates={`${airport.coordinates.lat}, ${airport.coordinates.lon}`}
+              icao={airport.icao}
+              timeZone={airport.timeZone}
+              runways={airport.runways}
             />
           ))}
 

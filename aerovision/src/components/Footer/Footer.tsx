@@ -3,7 +3,7 @@ import { Plane } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#050B16]">
+    <footer className="border-t border-[#9ab7c3]/20 bg-[#071018]">
 
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
 
@@ -17,17 +17,14 @@ export default function Footer() {
               to="/"
               className="inline-flex items-center gap-3"
             >
-              <Plane
-                size={30}
-                className="text-sky-400"
-              />
+              <Plane size={26} className="text-[#f5b942]" />
 
-              <h2 className="text-xl font-bold text-white sm:text-2xl">
+              <h2 className="display-heading text-xl font-bold text-white sm:text-2xl">
                 AeroVision
               </h2>
             </Link>
 
-            <p className="mt-5 max-w-sm text-sm leading-7 text-gray-400 sm:text-base">
+            <p className="mt-5 max-w-sm text-sm leading-7 text-[#91aab5] sm:text-base">
               Explore flights, aircraft and airports
               around the world with AeroVision.
             </p>

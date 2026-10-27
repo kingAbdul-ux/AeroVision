@@ -59,7 +59,7 @@ export default function SearchBar() {
 
   return (
 
-    <div className="mt-12 w-full max-w-6xl rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6">
+    <div className="aviation-panel mt-12 w-full max-w-6xl p-6">
 
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -88,7 +88,7 @@ export default function SearchBar() {
 
           onClick={searchFlights}
 
-          className="rounded-xl bg-sky-500 text-white font-semibold hover:bg-sky-600 transition"
+          className="border border-[#f5b942] bg-[#f5b942] text-sm font-bold uppercase tracking-[0.1em] text-[#08121b] transition hover:bg-[#ffd16b]"
 
         >
 

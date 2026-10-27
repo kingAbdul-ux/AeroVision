@@ -1,26 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-html,
-body,
-#root {
-    width: 100%;
-    height: 100%;
-    margin: 1;
-    padding: 20px;
-    background: #07111F;
-    color: white;
-    font-family: Inter, Arial, sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    overflow-x: hidden;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
+:root { color: #172033; background: #f4f8fc; font-family: 'Manrope', sans-serif; }
+* { box-sizing: border-box; }
+html, body, #root { min-width: 320px; min-height: 100%; margin: 0; }
+body { overflow-x: hidden; background: radial-gradient(circle at 8% 5%, #dff2ff 0, transparent 25rem), radial-gradient(circle at 93% 16%, #e2f6f8 0, transparent 22rem), #f5f8fc; }
+a { color: inherit; text-decoration: none; }
+button, input, select { font: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #77b9f7; outline-offset: 2px; }
+::selection { background: #cfe8ff; color: #102a43; }
+.aviation-panel { border: 1px solid rgba(255, 255, 255, .8); background: rgba(255, 255, 255, .72); box-shadow: 0 12px 32px rgba(42, 76, 109, .09); border-radius: 14px; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.eyebrow { color: #417aa9; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.display-heading { color: #102a43; letter-spacing: -.035em; }
+.mono-data { font-family: 'DM Mono', monospace; }
+.page-shell { min-height: calc(100vh - 68px); background: transparent; padding: 3rem 1rem; }
+.page-title { color: #102a43; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -.04em; }
+.page-copy { color: #5e6c84; line-height: 1.65; }
+.input-field { width: 100%; border: 1px solid rgba(200, 215, 231, .9); border-radius: 10px; background: rgba(255,255,255,.72); color: #172033; padding: .82rem 1rem; outline: none; transition: border-color .15s, box-shadow .15s; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.input-field:focus { border-color: #4e9fe7; box-shadow: 0 0 0 3px #dbeeff; }
+.primary-button { border-radius: 10px; background: #1676c5; color: white; font-weight: 700; padding: .82rem 1.15rem; transition: background .15s, transform .15s; }
+.primary-button:hover { background: #125f9e; }
+.secondary-button { border: 1px solid #d2dce8; border-radius: 10px; background: #fff; color: #23415f; font-weight: 700; padding: .82rem 1.15rem; transition: border-color .15s, background .15s; }
+.secondary-button:hover { border-color: #85bdf0; background: #f4faff; }
+.glass-surface { border: 1px solid rgba(255,255,255,.82); background: rgba(255,255,255,.68); box-shadow: 0 16px 38px rgba(42,76,109,.1); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .aviation-panel, .glass-surface { background: rgba(255,255,255,.94); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }

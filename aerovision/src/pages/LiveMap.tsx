@@ -85,12 +85,12 @@ function WeatherLayers() {
   return (
     <>
       {/* Weather controls */}
-      <div className="absolute right-3 top-3 z-1000 w-[calc(100%-1.5rem)] max-w-xs rounded-2xl border border-white/10 bg-[#050B16]/95 p-4 text-white shadow-2xl backdrop-blur-xl sm:right-4 sm:top-4 sm:p-5">
-        <h2 className="text-base font-bold sm:text-lg">
+      <div className="glass-surface absolute right-3 top-3 z-1000 w-[calc(100%-1.5rem)] max-w-xs rounded-xl p-4 text-slate-800 sm:right-4 sm:top-4 sm:p-5">
+        <h2 className="text-base font-bold text-[#102a43] sm:text-lg">
           Weather Layers
         </h2>
 
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs text-slate-500">
           Updates every 5 minutes
         </p>
 
@@ -106,7 +106,7 @@ function WeatherLayers() {
             className="h-4 w-4"
           />
 
-          <span className="text-sm">
+          <span className="text-sm text-slate-700">
             Precipitation
           </span>
         </label>
@@ -123,7 +123,7 @@ function WeatherLayers() {
             className="h-4 w-4"
           />
 
-          <span className="text-sm">
+          <span className="text-sm text-slate-700">
             Clouds
           </span>
         </label>
@@ -164,6 +164,7 @@ export default function LiveMap() {
 
   const [error, setError] =
     useState("");
+  const [updated, setUpdated] = useState<Date | null>(null);
 
   useEffect(() => {
     const loadAircraft = async () => {
@@ -183,6 +184,7 @@ export default function LiveMap() {
           validAircraft.slice(0, 100);
 
         setAircraft(limitedAircraft);
+        setUpdated(new Date());
 
         setSelectedAircraft((current) => {
           if (!current) {
@@ -221,39 +223,37 @@ export default function LiveMap() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#07111F]">
+    <main className="min-h-screen bg-slate-50">
 
       {/* Header */}
       <div className="px-4 py-6 sm:px-6 sm:py-8">
         <div className="mx-auto max-w-7xl">
 
-          <p className="text-base text-sky-400 sm:text-lg">
-            AeroVision
-          </p>
+          <p className="eyebrow">Real aircraft positions</p>
 
-          <h1 className="mt-2 text-3xl font-bold text-white sm:text-5xl">
+          <h1 className="page-title mt-2">
             Live Flight Map
           </h1>
 
-          <p className="mt-3 max-w-2xl text-sm text-gray-400 sm:text-base">
+          <p className="page-copy mt-3 max-w-2xl text-sm sm:text-base">
             Real aircraft positions powered by OpenSky Network.
           </p>
 
           {loading && (
-            <p className="mt-4 text-sm text-sky-400 sm:text-base">
+            <p className="mt-4 text-sm text-sky-700 sm:text-base">
               Loading aircraft...
             </p>
           )}
 
           {!loading && !error && (
-            <p className="mt-4 text-sm text-green-400 sm:text-base">
-              {aircraft.length} aircraft detected
+            <p className="mt-4 text-sm text-emerald-700 sm:text-base">
+              {aircraft.length} aircraft detected{updated ? ` · Updated ${updated.toLocaleTimeString()}` : ""}
             </p>
           )}
 
           {error && (
-            <div className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 p-4">
-              <p className="text-sm text-red-400">
+            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4">
+              <p className="text-sm text-red-700">
                 {error}
               </p>
             </div>
@@ -263,7 +263,7 @@ export default function LiveMap() {
       </div>
 
       {/* Map */}
-      <div className="relative h-162.5 w-full sm:h-175">
+      <div className="relative mx-auto h-125 w-full max-w-[1400px] overflow-hidden border-y border-slate-200 sm:h-150">
 
         <MapControl
           aircraft={aircraft}
@@ -280,7 +280,7 @@ export default function LiveMap() {
 
           <TileLayer
             attribution="&copy; OpenStreetMap contributors"
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           />
 
           <WeatherLayers />
